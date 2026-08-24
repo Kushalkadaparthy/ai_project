@@ -1,0 +1,3062 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Axiom AI</title>
+
+<style>
+/* =========================================================
+   AXIOM AI
+   Complete Frontend
+========================================================= */
+
+:root {
+    --bg: #07080d;
+    --surface: #0d0f17;
+    --surface2: #121522;
+    --surface3: #191c2a;
+
+    --text: #f5f7ff;
+    --muted: #8b91a7;
+
+    --border: rgba(255,255,255,.08);
+
+    --accent: #7c5cff;
+    --accent2: #00d9ff;
+
+    --userBubble: #19172d;
+
+    --sidebar-width: 280px;
+
+    --shadow:
+        0 20px 60px rgba(0,0,0,.35);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    background: var(--bg);
+    color: var(--text);
+}
+
+
+/* =========================================================
+   APP
+========================================================= */
+
+.app {
+    width: 100%;
+    height: 100vh;
+
+    display: flex;
+
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+.sidebar {
+    width: var(--sidebar-width);
+    height: 100%;
+
+    flex-shrink: 0;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(255,255,255,.025),
+            transparent 40%
+        ),
+        var(--surface);
+
+    border-right: 1px solid var(--border);
+
+    display: flex;
+    flex-direction: column;
+
+    position: relative;
+    z-index: 30;
+
+    transition:
+        transform .35s cubic-bezier(.2,.8,.2,1),
+        width .35s ease;
+}
+
+.sidebar-header {
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    gap: 12px;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 12px;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    box-shadow:
+        0 0 25px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 70%
+        );
+}
+
+.logo-mark {
+    width: 18px;
+    height: 18px;
+
+    border: 3px solid white;
+
+    border-radius: 50%;
+
+    position: relative;
+}
+
+.logo-mark::after {
+    content: "";
+
+    width: 6px;
+    height: 6px;
+
+    background: white;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    right: -4px;
+    bottom: -2px;
+}
+
+.brand {
+    font-size: 17px;
+    font-weight: 750;
+
+    letter-spacing: -.4px;
+}
+
+.brand span {
+    color: var(--accent2);
+}
+
+
+/* =========================================================
+   SIDEBAR CONTENT
+========================================================= */
+
+.sidebar-content {
+    flex: 1;
+
+    padding: 10px 12px;
+
+    overflow-y: auto;
+}
+
+.new-chat {
+    width: 100%;
+    height: 48px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            color-mix(
+                in srgb,
+                var(--accent),
+                transparent 84%
+            ),
+            color-mix(
+                in srgb,
+                var(--accent2),
+                transparent 90%
+            )
+        );
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    font-weight: 650;
+    font-size: 14px;
+
+    transition: .25s ease;
+}
+
+.new-chat:hover {
+    transform: translateY(-1px);
+
+    border-color:
+        color-mix(
+            in srgb,
+            var(--accent),
+            white 15%
+        );
+
+    box-shadow:
+        0 8px 30px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 86%
+        );
+}
+
+.plus {
+    font-size: 20px;
+    line-height: 0;
+}
+
+.section-label {
+    font-size: 10px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.3px;
+
+    color: var(--muted);
+
+    margin:
+        25px 10px 9px;
+}
+
+.chat-item {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px 12px;
+
+    border-radius: 11px;
+
+    color: var(--muted);
+
+    font-size: 13px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.chat-item:hover {
+    background:
+        rgba(255,255,255,.04);
+
+    color: var(--text);
+}
+
+.chat-item.active {
+    background:
+        linear-gradient(
+            90deg,
+            color-mix(
+                in srgb,
+                var(--accent),
+                transparent 86%
+            ),
+            transparent
+        );
+
+    color: var(--text);
+}
+
+.chat-icon {
+    width: 28px;
+    height: 28px;
+
+    border-radius: 8px;
+
+    display: grid;
+    place-items: center;
+
+    background:
+        rgba(255,255,255,.045);
+
+    font-size: 13px;
+}
+
+.chat-name {
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+/* =========================================================
+   SIDEBAR BOTTOM
+========================================================= */
+
+.sidebar-bottom {
+    padding: 12px;
+
+    border-top:
+        1px solid var(--border);
+}
+
+.sidebar-button {
+    width: 100%;
+
+    border: 0;
+
+    background: transparent;
+
+    color: var(--muted);
+
+    padding: 12px;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    text-align: left;
+
+    font-size: 13px;
+}
+
+.sidebar-button:hover {
+    background:
+        rgba(255,255,255,.04);
+
+    color: var(--text);
+}
+
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+.main {
+    flex: 1;
+
+    min-width: 0;
+
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    background:
+        radial-gradient(
+            circle at 70% 20%,
+            color-mix(
+                in srgb,
+                var(--accent),
+                transparent 95%
+            ),
+            transparent 35%
+        ),
+        var(--bg);
+
+    position: relative;
+}
+
+
+/* =========================================================
+   TOP BAR
+========================================================= */
+
+.topbar {
+    height: 70px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 22px;
+
+    border-bottom:
+        1px solid var(--border);
+
+    backdrop-filter:
+        blur(20px);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--bg),
+            transparent 18%
+        );
+
+    position: relative;
+
+    z-index: 10;
+}
+
+.top-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.menu-btn {
+    width: 40px;
+    height: 40px;
+
+    display: none;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background: var(--surface);
+
+    color: var(--text);
+
+    cursor: pointer;
+}
+
+.menu-lines {
+    width: 17px;
+    margin: auto;
+}
+
+.menu-lines span {
+    display: block;
+
+    height: 2px;
+
+    background: currentColor;
+
+    margin: 4px 0;
+
+    border-radius: 2px;
+}
+
+.model-selector {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 14px;
+
+    font-weight: 650;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #39e58c;
+
+    box-shadow:
+        0 0 10px #39e58c;
+}
+
+.top-actions {
+    display: flex;
+
+    gap: 7px;
+}
+
+.icon-btn {
+    width: 40px;
+    height: 40px;
+
+    border-radius: 11px;
+
+    border:
+        1px solid var(--border);
+
+    background: var(--surface);
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    transition: .2s ease;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 16px;
+}
+
+.icon-btn:hover {
+    color: var(--text);
+
+    background:
+        var(--surface2);
+
+    transform:
+        translateY(-1px);
+}
+
+
+/* =========================================================
+   CHAT
+========================================================= */
+
+.chat {
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding:
+        45px 20px 150px;
+
+    scroll-behavior: smooth;
+}
+
+.chat-inner {
+    width:
+        min(850px, 100%);
+
+    margin: auto;
+}
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome {
+    min-height: 58vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    animation:
+        fadeUp .7s ease;
+}
+
+.welcome-orb {
+    width: 78px;
+    height: 78px;
+
+    border-radius: 24px;
+
+    background:
+        radial-gradient(
+            circle at 30% 25%,
+            white,
+            var(--accent) 30%,
+            var(--accent2) 100%
+        );
+
+    box-shadow:
+        0 0 60px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 75%
+        );
+
+    margin-bottom: 27px;
+
+    position: relative;
+
+    animation:
+        float 4s ease-in-out infinite;
+}
+
+.welcome-orb::before,
+.welcome-orb::after {
+    content: "";
+
+    position: absolute;
+
+    border:
+        1px solid
+        rgba(255,255,255,.35);
+
+    border-radius: inherit;
+
+    inset: -8px;
+
+    animation:
+        pulse 2.5s ease-out infinite;
+}
+
+.welcome-orb::after {
+    inset: -17px;
+
+    opacity: .35;
+
+    animation-delay: .7s;
+}
+
+.welcome h1 {
+    font-size:
+        clamp(32px, 5vw, 52px);
+
+    letter-spacing: -2.5px;
+
+    line-height: 1;
+
+    margin-bottom: 15px;
+
+    background:
+        linear-gradient(
+            110deg,
+            var(--text),
+            color-mix(
+                in srgb,
+                var(--accent2),
+                white 20%
+            ),
+            var(--accent)
+        );
+
+    -webkit-background-clip: text;
+
+    background-clip: text;
+
+    color: transparent;
+}
+
+.welcome p {
+    color: var(--muted);
+
+    font-size: 15px;
+
+    max-width: 500px;
+
+    line-height: 1.6;
+}
+
+.suggestions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 28px;
+}
+
+.suggestion {
+    border:
+        1px solid var(--border);
+
+    background:
+        var(--surface);
+
+    color: var(--muted);
+
+    padding:
+        10px 14px;
+
+    border-radius: 999px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition: .2s ease;
+}
+
+.suggestion:hover {
+    color: var(--text);
+
+    border-color:
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 35%
+        );
+
+    background:
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 92%
+        );
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message {
+    display: flex;
+
+    gap: 13px;
+
+    margin: 25px 0;
+
+    animation:
+        messageIn .35s ease;
+}
+
+.message.user {
+    justify-content: flex-end;
+}
+
+.avatar {
+    width: 34px;
+    height: 34px;
+
+    flex:
+        0 0 34px;
+
+    border-radius: 10px;
+
+    display: grid;
+
+    place-items: center;
+
+    font-size: 9px;
+
+    font-weight: 800;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+}
+
+.message.user .avatar {
+    order: 2;
+
+    background:
+        var(--surface3);
+}
+
+.bubble {
+    max-width:
+        min(680px, 80%);
+
+    padding:
+        14px 16px;
+
+    border-radius: 17px;
+
+    line-height: 1.65;
+
+    font-size: 14px;
+
+    background:
+        var(--surface);
+
+    border:
+        1px solid var(--border);
+
+    box-shadow:
+        0 8px 25px
+        rgba(0,0,0,.12);
+
+    white-space: pre-wrap;
+}
+
+.message.user .bubble {
+    background:
+        var(--userBubble);
+
+    border-color:
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 85%
+        );
+}
+
+
+/* =========================================================
+   COMPOSER
+========================================================= */
+
+.composer-area {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    padding: 20px;
+
+    background:
+        linear-gradient(
+            transparent,
+            var(--bg) 35%
+        );
+
+    pointer-events: none;
+}
+
+.composer {
+    width:
+        min(850px, 100%);
+
+    margin: auto;
+
+    pointer-events: auto;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 20px;
+
+    background:
+        color-mix(
+            in srgb,
+            var(--surface),
+            transparent 5%
+        );
+
+    backdrop-filter:
+        blur(25px);
+
+    box-shadow:
+        var(--shadow);
+
+    padding: 9px;
+
+    transition: .25s ease;
+}
+
+.composer:focus-within {
+    border-color:
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 45%
+        );
+
+    box-shadow:
+        0 15px 55px
+        rgba(0,0,0,.35),
+        0 0 0 3px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 93%
+        );
+}
+
+.input-row {
+    display: flex;
+
+    align-items: flex-end;
+
+    gap: 8px;
+}
+
+textarea {
+    flex: 1;
+
+    resize: none;
+
+    min-height: 42px;
+
+    max-height: 140px;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    font: inherit;
+
+    padding:
+        11px 12px;
+
+    line-height: 1.5;
+}
+
+textarea::placeholder {
+    color: #6d7389;
+}
+
+.attach {
+    margin-bottom: 3px;
+}
+
+.send {
+    width: 42px;
+    height: 42px;
+
+    border: 0;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent2)
+        );
+
+    color: white;
+
+    cursor: pointer;
+
+    display: grid;
+
+    place-items: center;
+
+    transition: .2s ease;
+
+    font-size: 17px;
+}
+
+.send:hover {
+    transform:
+        scale(1.05);
+
+    box-shadow:
+        0 8px 25px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 70%
+        );
+}
+
+.send:disabled {
+    opacity: .5;
+
+    cursor: not-allowed;
+
+    transform: none;
+}
+
+.composer-footer {
+    display: flex;
+
+    justify-content: space-between;
+
+    padding:
+        6px 9px 3px;
+
+    color: #62687b;
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+.settings {
+    position: fixed;
+
+    top: 0;
+    right: 0;
+
+    width:
+        min(380px, 90vw);
+
+    height: 100vh;
+
+    background:
+        var(--surface);
+
+    border-left:
+        1px solid var(--border);
+
+    z-index: 50;
+
+    transform:
+        translateX(105%);
+
+    transition:
+        transform .4s
+        cubic-bezier(.2,.8,.2,1);
+
+    box-shadow:
+        -30px 0 80px
+        rgba(0,0,0,.3);
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+.settings.open {
+    transform:
+        translateX(0);
+}
+
+.settings-header {
+    height: 72px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding:
+        0 20px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+.settings-title {
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+.close-settings {
+    width: 36px;
+    height: 36px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    background:
+        var(--surface2);
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    font-size: 20px;
+}
+
+.settings-content {
+    padding: 20px;
+
+    overflow-y: auto;
+}
+
+.setting-group {
+    margin-bottom: 30px;
+}
+
+.setting-group h3 {
+    font-size: 12px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+
+    color: var(--muted);
+
+    margin-bottom: 12px;
+}
+
+.theme-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 10px;
+}
+
+.theme-card {
+    min-height: 90px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    background:
+        var(--surface2);
+
+    padding: 12px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.theme-card:hover {
+    transform:
+        translateY(-2px);
+}
+
+.theme-card.selected {
+    border-color:
+        var(--accent);
+
+    box-shadow:
+        0 0 0 2px
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 88%
+        );
+}
+
+.theme-preview {
+    height: 43px;
+
+    border-radius: 8px;
+
+    margin-bottom: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--preview1),
+            var(--preview2)
+        );
+}
+
+.theme-name {
+    font-size: 12px;
+
+    font-weight: 650;
+}
+
+.accent-grid {
+    display: flex;
+
+    gap: 10px;
+
+    flex-wrap: wrap;
+}
+
+.accent {
+    width: 31px;
+    height: 31px;
+
+    border-radius: 50%;
+
+    border:
+        3px solid transparent;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.accent.selected {
+    border-color:
+        white;
+
+    box-shadow:
+        0 0 0 2px var(--accent);
+}
+
+.appearance-row {
+    display: flex;
+
+    gap: 8px;
+}
+
+.appearance {
+    flex: 1;
+
+    padding:
+        11px 8px;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 11px;
+
+    background:
+        var(--surface2);
+
+    color: var(--muted);
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition: .2s ease;
+}
+
+.appearance.active {
+    color: var(--text);
+
+    border-color:
+        var(--accent);
+
+    background:
+        color-mix(
+            in srgb,
+            var(--accent),
+            transparent 90%
+        );
+}
+
+
+/* =========================================================
+   OVERLAY
+========================================================= */
+
+.overlay {
+    position: fixed;
+
+    inset: 0;
+
+    background:
+        rgba(0,0,0,.5);
+
+    backdrop-filter:
+        blur(3px);
+
+    z-index: 40;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    transition: .3s ease;
+}
+
+.overlay.show {
+    opacity: 1;
+
+    visibility: visible;
+}
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+.typing {
+    display: flex;
+
+    gap: 4px;
+
+    align-items: center;
+
+    padding: 3px 4px;
+}
+
+.typing span {
+    width: 6px;
+    height: 6px;
+
+    border-radius: 50%;
+
+    background:
+        var(--accent2);
+
+    animation:
+        typing .9s infinite ease-in-out;
+}
+
+.typing span:nth-child(2) {
+    animation-delay: .15s;
+}
+
+.typing span:nth-child(3) {
+    animation-delay: .3s;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes fadeUp {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(15px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes messageIn {
+
+    from {
+        opacity: 0;
+
+        transform:
+            translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+
+        transform:
+            translateY(0);
+    }
+}
+
+@keyframes float {
+
+    0%,100% {
+        transform:
+            translateY(0);
+    }
+
+    50% {
+        transform:
+            translateY(-8px);
+    }
+}
+
+@keyframes pulse {
+
+    0% {
+        transform:
+            scale(.8);
+
+        opacity: .7;
+    }
+
+    100% {
+        transform:
+            scale(1.2);
+
+        opacity: 0;
+    }
+}
+
+@keyframes typing {
+
+    0%,100% {
+        transform:
+            translateY(0);
+
+        opacity: .4;
+    }
+
+    50% {
+        transform:
+            translateY(-4px);
+
+        opacity: 1;
+    }
+}
+
+
+/* =========================================================
+   LIGHT THEME
+========================================================= */
+
+body.light {
+
+    --bg: #f5f7fb;
+
+    --surface: #ffffff;
+
+    --surface2: #f0f2f7;
+
+    --surface3: #e8ebf2;
+
+    --text: #151722;
+
+    --muted: #6b7182;
+
+    --border:
+        rgba(20,25,40,.09);
+
+    --userBubble:
+        #ece9ff;
+
+    --shadow:
+        0 20px 60px
+        rgba(40,45,70,.12);
+}
+
+
+/* =========================================================
+   MIDNIGHT
+========================================================= */
+
+body.midnight {
+
+    --bg: #030712;
+
+    --surface: #07101f;
+
+    --surface2: #0b172a;
+
+    --surface3: #102038;
+
+    --text: #edf6ff;
+
+    --muted: #7790aa;
+
+    --accent: #00b8ff;
+
+    --accent2: #00f0c8;
+
+    --userBubble: #0c1c32;
+}
+
+
+/* =========================================================
+   NEON
+========================================================= */
+
+body.neon {
+
+    --bg: #09030e;
+
+    --surface: #110719;
+
+    --surface2: #190a25;
+
+    --surface3: #240d32;
+
+    --text: #fff5ff;
+
+    --muted: #a787ac;
+
+    --accent: #ff3cac;
+
+    --accent2: #784cff;
+
+    --userBubble: #210c2e;
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 760px) {
+
+    .sidebar {
+
+        position: fixed;
+
+        left: 0;
+        top: 0;
+        bottom: 0;
+
+        transform:
+            translateX(-105%);
+
+        box-shadow:
+            20px 0 70px
+            rgba(0,0,0,.35);
+    }
+
+    .sidebar.open {
+        transform:
+            translateX(0);
+    }
+
+    .menu-btn {
+        display: grid;
+
+        place-items: center;
+    }
+
+    .topbar {
+        padding:
+            0 12px;
+    }
+
+    .chat {
+        padding:
+            25px
+            12px
+            140px;
+    }
+
+    .welcome {
+        min-height:
+            65vh;
+    }
+
+    .welcome h1 {
+        font-size:
+            38px;
+    }
+
+    .message {
+        gap: 8px;
+    }
+
+    .bubble {
+        max-width:
+            86%;
+    }
+
+    .composer-area {
+        padding:
+            10px;
+    }
+
+    .composer {
+        border-radius:
+            17px;
+    }
+}
+</style>
+</head>
+
+
+<body>
+
+<div class="app">
+
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
+
+    <aside
+    class="sidebar"
+    id="sidebar"
+>
+
+    <div class="sidebar-header">
+
+        <div class="logo">
+            <div class="logo-mark"></div>
+        </div>
+
+        <div class="brand">
+            AXIOM<span>.</span>
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-content">
+
+        <button
+            class="new-chat"
+            id="newChat"
+        >
+            <span class="plus">+</span>
+            New conversation
+        </button>
+
+
+        <div class="section-label">
+            Recent
+        </div>
+
+
+        <div class="chat-item active">
+
+            <div class="chat-icon">
+                ✦
+            </div>
+
+            <div class="chat-name">
+                Welcome to Axiom
+            </div>
+
+        </div>
+
+
+        <div class="chat-item">
+
+            <div class="chat-icon">
+                ⌘
+            </div>
+
+            <div class="chat-name">
+                Project architecture
+            </div>
+
+        </div>
+
+
+        <div class="chat-item">
+
+            <div class="chat-icon">
+                ◈
+            </div>
+
+            <div class="chat-name">
+                UI design ideas
+            </div>
+
+        </div>
+
+
+        <div class="chat-item">
+
+            <div class="chat-icon">
+                ◇
+            </div>
+
+            <div class="chat-name">
+                Learn JavaScript
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            class="sidebar-button"
+            id="settingsBtn"
+        >
+            ⚙
+            <span>Settings</span>
+        </button>
+
+
+        <button
+            class="sidebar-button"
+        >
+            ◇
+            <span>Help & shortcuts</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+    <!-- =====================================================
+         MAIN
+    ====================================================== -->
+
+    <main class="main">
+
+
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="top-left">
+
+                <button
+                    class="menu-btn"
+                    id="menuBtn"
+                >
+
+                    <div class="menu-lines">
+
+                        <span></span>
+                        <span></span>
+                        <span></span>
+
+                    </div>
+
+                </button>
+
+
+                <div class="model-selector">
+
+                    <span class="status-dot"></span>
+
+                    Axiom AI
+
+                </div>
+
+            </div>
+
+
+            <div class="top-actions">
+
+                <button
+                    class="icon-btn"
+                    id="topNewChat"
+                    title="New chat"
+                >
+                    +
+                </button>
+
+
+                <button
+                    class="icon-btn"
+                    id="topSettings"
+                    title="Settings"
+                >
+                    ⚙
+                </button>
+
+            </div>
+
+        </header>
+
+
+        <!-- CHAT -->
+
+        <section
+            class="chat"
+            id="chat"
+        >
+
+            <div
+                class="chat-inner"
+                id="chatInner"
+            >
+
+                <div
+                    class="welcome"
+                    id="welcome"
+                >
+
+                    <div class="welcome-orb"></div>
+
+
+                    <h1>
+                        Think beyond.
+                    </h1>
+
+
+                    <p>
+                        Axiom is your intelligent workspace
+                        for ideas, code, research and everything
+                        else humans decided should be done
+                        through a chat box.
+                    </p>
+
+
+                    <div class="suggestions">
+
+                        <button class="suggestion">
+                            Explain quantum computing
+                        </button>
+
+                        <button class="suggestion">
+                            Build a website
+                        </button>
+
+                        <button class="suggestion">
+                            Help me study
+                        </button>
+
+                        <button class="suggestion">
+                            Analyze an idea
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- COMPOSER -->
+
+        <div class="composer-area">
+
+            <div class="composer">
+
+                <div class="input-row">
+
+
+                    <button
+                        class="icon-btn attach"
+                        title="Attach"
+                    >
+                        +
+                    </button>
+
+
+                    <textarea
+                        id="messageInput"
+                        rows="1"
+                        placeholder="Message Axiom..."
+                    ></textarea>
+
+
+                    <button
+                        class="send"
+                        id="sendBtn"
+                        title="Send"
+                    >
+                        ↑
+                    </button>
+
+                </div>
+
+
+                <div class="composer-footer">
+
+                    <span>
+                        Axiom can make mistakes.
+                        Check important information.
+                    </span>
+
+                    <span>
+                        Enter ↵
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<!-- =========================================================
+     OVERLAY
+========================================================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+
+<!-- =========================================================
+     SETTINGS PANEL
+========================================================= -->
+
+<aside
+    class="settings"
+    id="settings"
+>
+
+    <div class="settings-header">
+
+        <div class="settings-title">
+            Appearance
+        </div>
+
+
+        <button
+            class="close-settings"
+            id="closeSettings"
+        >
+            ×
+        </button>
+
+    </div>
+
+
+    <div class="settings-content">
+
+
+        <!-- THEMES -->
+
+        <div class="setting-group">
+
+            <h3>
+                Theme
+            </h3>
+
+
+            <div class="theme-grid">
+
+
+                <div
+                    class="theme-card selected"
+                    data-theme="dark"
+                >
+
+                    <div
+                        class="theme-preview"
+                        style="
+                            --preview1:#090b13;
+                            --preview2:#7c5cff;
+                        "
+                    ></div>
+
+                    <div class="theme-name">
+                        Dark
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="theme-card"
+                    data-theme="light"
+                >
+
+                    <div
+                        class="theme-preview"
+                        style="
+                            --preview1:#ffffff;
+                            --preview2:#8c78ff;
+                        "
+                    ></div>
+
+                    <div class="theme-name">
+                        Light
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="theme-card"
+                    data-theme="midnight"
+                >
+
+                    <div
+                        class="theme-preview"
+                        style="
+                            --preview1:#020817;
+                            --preview2:#00d9ff;
+                        "
+                    ></div>
+
+                    <div class="theme-name">
+                        Midnight
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="theme-card"
+                    data-theme="neon"
+                >
+
+                    <div
+                        class="theme-preview"
+                        style="
+                            --preview1:#100518;
+                            --preview2:#ff3cac;
+                        "
+                    ></div>
+
+                    <div class="theme-name">
+                        Neon
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ACCENT COLORS -->
+
+        <div class="setting-group">
+
+            <h3>
+                Accent
+            </h3>
+
+
+            <div class="accent-grid">
+
+
+                <button
+                    class="accent selected"
+                    data-accent="#7c5cff"
+                    style="background:#7c5cff"
+                ></button>
+
+
+                <button
+                    class="accent"
+                    data-accent="#00d9ff"
+                    style="background:#00d9ff"
+                ></button>
+
+
+                <button
+                    class="accent"
+                    data-accent="#00e5a8"
+                    style="background:#00e5a8"
+                ></button>
+
+
+                <button
+                    class="accent"
+                    data-accent="#ff3cac"
+                    style="background:#ff3cac"
+                ></button>
+
+
+                <button
+                    class="accent"
+                    data-accent="#ff9f43"
+                    style="background:#ff9f43"
+                ></button>
+
+
+                <button
+                    class="accent"
+                    data-accent="#ff5c7c"
+                    style="background:#ff5c7c"
+                ></button>
+
+            </div>
+
+        </div>
+
+
+        <!-- INTERFACE -->
+
+        <div class="setting-group">
+
+            <h3>
+                Interface
+            </h3>
+
+
+            <div class="appearance-row">
+
+                <button
+                    class="appearance active"
+                    data-density="comfortable"
+                >
+                    Comfortable
+                </button>
+
+
+                <button
+                    class="appearance"
+                    data-density="compact"
+                >
+                    Compact
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</aside>
+
+
+<script>
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const sidebar =
+    document.getElementById("sidebar");
+
+const menuBtn =
+    document.getElementById("menuBtn");
+
+const overlay =
+    document.getElementById("overlay");
+
+const settings =
+    document.getElementById("settings");
+
+const settingsBtn =
+    document.getElementById("settingsBtn");
+
+const topSettings =
+    document.getElementById("topSettings");
+
+const closeSettings =
+    document.getElementById("closeSettings");
+
+const chat =
+    document.getElementById("chat");
+
+const chatInner =
+    document.getElementById("chatInner");
+
+const input =
+    document.getElementById("messageInput");
+
+const sendBtn =
+    document.getElementById("sendBtn");
+
+const newChat =
+    document.getElementById("newChat");
+
+const topNewChat =
+    document.getElementById("topNewChat");
+
+const welcome =
+    document.getElementById("welcome");
+
+
+/* =========================================================
+   SIDEBAR
+========================================================= */
+
+function openSidebar() {
+
+    sidebar.classList.add("open");
+
+    overlay.classList.add("show");
+}
+
+
+function closeSidebar() {
+
+    sidebar.classList.remove("open");
+
+    if (
+        !settings.classList.contains("open")
+    ) {
+        overlay.classList.remove("show");
+    }
+}
+
+
+menuBtn.addEventListener(
+    "click",
+    () => {
+
+        if (
+            sidebar.classList.contains("open")
+        ) {
+
+            closeSidebar();
+
+        } else {
+
+            openSidebar();
+
+        }
+
+    }
+);
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+function openSettings() {
+
+    settings.classList.add("open");
+
+    overlay.classList.add("show");
+
+    sidebar.classList.remove("open");
+}
+
+
+function closeSettingsPanel() {
+
+    settings.classList.remove("open");
+
+    if (
+        !sidebar.classList.contains("open")
+    ) {
+
+        overlay.classList.remove("show");
+
+    }
+}
+
+
+settingsBtn.addEventListener(
+    "click",
+    openSettings
+);
+
+
+topSettings.addEventListener(
+    "click",
+    openSettings
+);
+
+
+closeSettings.addEventListener(
+    "click",
+    closeSettingsPanel
+);
+
+
+overlay.addEventListener(
+    "click",
+    () => {
+
+        closeSidebar();
+
+        closeSettingsPanel();
+
+    }
+);
+
+
+/* =========================================================
+   THEME SYSTEM
+========================================================= */
+
+const themeCards =
+    document.querySelectorAll(".theme-card");
+
+
+function setTheme(theme) {
+
+    document.body.classList.remove(
+        "light",
+        "midnight",
+        "neon"
+    );
+
+
+    if (theme !== "dark") {
+
+        document.body.classList.add(theme);
+
+    }
+
+
+    themeCards.forEach(card => {
+
+        card.classList.toggle(
+            "selected",
+            card.dataset.theme === theme
+        );
+
+    });
+
+
+    localStorage.setItem(
+        "axiom-theme",
+        theme
+    );
+
+}
+
+
+themeCards.forEach(card => {
+
+    card.addEventListener(
+        "click",
+        () => {
+
+            setTheme(
+                card.dataset.theme
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   ACCENT
+========================================================= */
+
+const accentButtons =
+    document.querySelectorAll(".accent");
+
+
+accentButtons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            const color =
+                button.dataset.accent;
+
+
+            document.documentElement
+                .style
+                .setProperty(
+                    "--accent",
+                    color
+                );
+
+
+            accentButtons.forEach(item => {
+
+                item.classList.remove(
+                    "selected"
+                );
+
+            });
+
+
+            button.classList.add(
+                "selected"
+            );
+
+
+            localStorage.setItem(
+                "axiom-accent",
+                color
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   DENSITY
+========================================================= */
+
+const appearanceButtons =
+    document.querySelectorAll(".appearance");
+
+
+appearanceButtons.forEach(button => {
+
+    button.addEventListener(
+        "click",
+        () => {
+
+            appearanceButtons.forEach(item => {
+
+                item.classList.remove(
+                    "active"
+                );
+
+            });
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            const density =
+                button.dataset.density;
+
+
+            if (
+                density === "compact"
+            ) {
+
+                document.documentElement
+                    .style
+                    .setProperty(
+                        "--sidebar-width",
+                        "250px"
+                    );
+
+            } else {
+
+                document.documentElement
+                    .style
+                    .setProperty(
+                        "--sidebar-width",
+                        "280px"
+                    );
+
+            }
+
+
+            localStorage.setItem(
+                "axiom-density",
+                density
+            );
+
+        }
+    );
+
+});
+
+
+/* =========================================================
+   LOAD SAVED SETTINGS
+========================================================= */
+
+const savedTheme =
+    localStorage.getItem(
+        "axiom-theme"
+    );
+
+const savedAccent =
+    localStorage.getItem(
+        "axiom-accent"
+    );
+
+const savedDensity =
+    localStorage.getItem(
+        "axiom-density"
+    );
+
+
+if (savedTheme) {
+
+    setTheme(savedTheme);
+
+}
+
+
+if (savedAccent) {
+
+    document.documentElement
+        .style
+        .setProperty(
+            "--accent",
+            savedAccent
+        );
+
+
+    accentButtons.forEach(button => {
+
+        button.classList.toggle(
+            "selected",
+            button.dataset.accent ===
+            savedAccent
+        );
+
+    });
+
+}
+
+
+if (savedDensity) {
+
+    const button =
+        document.querySelector(
+            `[data-density="${savedDensity}"]`
+        );
+
+
+    if (button) {
+
+        button.click();
+
+    }
+
+}
+
+
+/* =========================================================
+   TEXTAREA AUTO RESIZE
+========================================================= */
+
+input.addEventListener(
+    "input",
+    () => {
+
+        input.style.height =
+            "auto";
+
+        input.style.height =
+            Math.min(
+                input.scrollHeight,
+                140
+            ) + "px";
+
+    }
+);
+
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+async function sendMessage() {
+
+    const text =
+        input.value.trim();
+
+
+    if (!text) {
+        return;
+    }
+
+
+    welcome.style.display =
+        "none";
+
+
+    addMessage(
+        text,
+        "user"
+    );
+
+
+    input.value =
+        "";
+
+
+    input.style.height =
+        "auto";
+
+
+    sendBtn.disabled =
+        true;
+
+
+    showTyping();
+
+
+    try {
+
+        /*
+         * This sends the message to
+         * server.js
+         *
+         * Your server should expose:
+         *
+         * POST /api/chat
+         */
+
+        const response =
+            await fetch(
+                "/api/chat",
+                {
+
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        message: text
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        removeTyping();
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                data.error ||
+                "Server error"
+            );
+
+        }
+
+
+        addMessage(
+            data.reply,
+            "ai"
+        );
+
+
+    } catch (error) {
+
+        console.error(
+            "Axiom connection error:",
+            error
+        );
+
+
+        removeTyping();
+
+
+        addMessage(
+            "I couldn't connect to the Axiom server. Check that server.js is running and that /api/chat is configured.",
+            "ai"
+        );
+
+    }
+
+
+    sendBtn.disabled =
+        false;
+
+
+    input.focus();
+
+}
+
+
+/* =========================================================
+   ADD MESSAGE
+========================================================= */
+
+function addMessage(
+    text,
+    type
+) {
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+
+    message.className =
+        "message " +
+        (
+            type === "user"
+                ? "user"
+                : "ai"
+        );
+
+
+    const avatar =
+        document.createElement(
+            "div"
+        );
+
+
+    avatar.className =
+        "avatar";
+
+
+    avatar.textContent =
+        type === "user"
+            ? "YOU"
+            : "AX";
+
+
+    const bubble =
+        document.createElement(
+            "div"
+        );
+
+
+    bubble.className =
+        "bubble";
+
+
+    bubble.textContent =
+        text;
+
+
+    message.appendChild(
+        avatar
+    );
+
+
+    message.appendChild(
+        bubble
+    );
+
+
+    chatInner.appendChild(
+        message
+    );
+
+
+    requestAnimationFrame(
+        () => {
+
+            chat.scrollTo({
+
+                top:
+                    chat.scrollHeight,
+
+                behavior:
+                    "smooth"
+
+            });
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   TYPING
+========================================================= */
+
+function showTyping() {
+
+    const message =
+        document.createElement(
+            "div"
+        );
+
+
+    message.className =
+        "message ai";
+
+
+    message.id =
+        "typingMessage";
+
+
+    message.innerHTML = `
+
+        <div class="avatar">
+            AX
+        </div>
+
+        <div class="bubble">
+
+            <div class="typing">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        </div>
+
+    `;
+
+
+    chatInner.appendChild(
+        message
+    );
+
+
+    chat.scrollTo({
+
+        top:
+            chat.scrollHeight,
+
+        behavior:
+            "smooth"
+
+    });
+
+}
+
+
+function removeTyping() {
+
+    const typing =
+        document.getElementById(
+            "typingMessage"
+        );
+
+
+    if (typing) {
+
+        typing.remove();
+
+    }
+
+}
+
+
+/* =========================================================
+   ENTER TO SEND
+========================================================= */
+
+input.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" &&
+            !event.shiftKey
+        ) {
+
+            event.preventDefault();
+
+            sendMessage();
+
+        }
+
+    }
+);
+
+
+sendBtn.addEventListener(
+    "click",
+    sendMessage
+);
+
+
+/* =========================================================
+   SUGGESTIONS
+========================================================= */
+
+function activateSuggestions() {
+
+    document
+        .querySelectorAll(
+            ".suggestion"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    input.value =
+                        button.textContent
+                            .trim();
+
+
+                    input.focus();
+
+                    sendMessage();
+
+                }
+            );
+
+        });
+
+}
+
+
+activateSuggestions();
+
+
+/* =========================================================
+   NEW CHAT
+========================================================= */
+
+function startNewChat() {
+
+    chatInner.innerHTML = "";
+
+
+    const newWelcome =
+        createWelcome();
+
+
+    chatInner.appendChild(
+        newWelcome
+    );
+
+
+    input.value =
+        "";
+
+
+    input.style.height =
+        "auto";
+
+
+    input.focus();
+
+}
+
+
+function createWelcome() {
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "welcome";
+
+
+    element.innerHTML = `
+
+        <div class="welcome-orb"></div>
+
+        <h1>
+            Think beyond.
+        </h1>
+
+        <p>
+            Axiom is your intelligent workspace
+            for ideas, code, research and everything
+            else humans decided should be done
+            through a chat box.
+        </p>
+
+        <div class="suggestions">
+
+            <button class="suggestion">
+                Explain quantum computing
+            </button>
+
+            <button class="suggestion">
+                Build a website
+            </button>
+
+            <button class="suggestion">
+                Help me study
+            </button>
+
+            <button class="suggestion">
+                Analyze an idea
+            </button>
+
+        </div>
+
+    `;
+
+
+    element
+        .querySelectorAll(
+            ".suggestion"
+        )
+        .forEach(button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    input.value =
+                        button.textContent
+                            .trim();
+
+
+                    input.focus();
+
+                    sendMessage();
+
+                }
+            );
+
+        });
+
+
+    return element;
+
+}
+
+
+newChat.addEventListener(
+    "click",
+    startNewChat
+);
+
+
+topNewChat.addEventListener(
+    "click",
+    startNewChat
+);
+
+
+/* =========================================================
+   CHAT HISTORY
+========================================================= */
+
+document
+    .querySelectorAll(
+        ".chat-item"
+    )
+    .forEach(item => {
+
+        item.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".chat-item"
+                    )
+                    .forEach(i => {
+
+                        i.classList.remove(
+                            "active"
+                        );
+
+                    });
+
+
+                item.classList.add(
+                    "active"
+                );
+
+
+                closeSidebar();
+
+            }
+        );
+
+    });
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeSidebar();
+
+            closeSettingsPanel();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
